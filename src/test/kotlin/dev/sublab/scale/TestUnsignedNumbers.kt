@@ -1,10 +1,6 @@
 package dev.sublab.scale
 
-import dev.sublab.scale.helpers.toHex
-import dev.sublab.scale.reflection.createGenericType
 import org.junit.jupiter.api.Test
-import java.io.InvalidClassException
-import kotlin.reflect.full.createType
 import kotlin.test.assertEquals
 
 internal class TestUnsignedNumbers {

@@ -1,7 +1,6 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.StructAdapter
-import dev.sublab.scale.helpers.toHex
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.createType
 import kotlin.test.assertEquals

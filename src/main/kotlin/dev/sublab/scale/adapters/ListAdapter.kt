@@ -2,6 +2,7 @@ package dev.sublab.scale.adapters
 
 import dev.sublab.scale.*
 import dev.sublab.scale.reflection.*
+import java.math.BigInteger
 import kotlin.reflect.KType
 
 @Suppress("unused")
@@ -12,9 +13,8 @@ class ListAdapter<T>(
     @Throws(UnwrappingException::class)
     override fun read(reader: ByteArrayReader, type: KType): List<T> {
         val wrappedType = type.unwrapArgument()
+        val count = adapterResolver.findAdapter(BigInteger::class).read(reader, BigInteger::class).toInt()
 
-        // TODO: Migrate count to BigInteger
-        val count = adapterResolver.findAdapter(Int::class).read(reader, Int::class)
         return (0 until count)
             .map { adapterResolver.findAdapter<T>(wrappedType).read(reader, wrappedType) }
             .toList()
@@ -22,8 +22,7 @@ class ListAdapter<T>(
 
     override fun write(obj: List<T>, type: KType) = obj.map {
         adapterResolver.findAdapter<T>(type.unwrapArgument()).write(it, type.unwrapArgument())
-        // TODO: Migrate count to BigInteger
-    }.fold(adapterResolver.findAdapter(Int::class).write(obj.count(), Int::class)) { byteArray, it ->
+    }.fold(adapterResolver.findAdapter(BigInteger::class).write(obj.count().toBigInteger(), BigInteger::class)) { byteArray, it ->
         byteArray + it
     }
 }

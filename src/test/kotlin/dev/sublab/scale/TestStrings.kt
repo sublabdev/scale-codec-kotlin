@@ -3,7 +3,6 @@ package dev.sublab.scale
 import dev.sublab.scale.reflection.createGenericType
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.createType
-import kotlin.test.assertEquals
 
 internal class TestStrings {
 

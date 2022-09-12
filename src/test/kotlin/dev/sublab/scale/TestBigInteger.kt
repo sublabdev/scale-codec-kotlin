@@ -52,5 +52,17 @@ internal class TestBigInteger {
         }
     }
 
-    // TODO: resolve within codec
+    @Test
+    internal fun testBigIntegerCoding() {
+        val codec = ScaleCodec.default()
+        for (testValue in predefinedTestCases.map { it.value }) {
+            val encoded = codec.toScale(testValue, BigInteger::class)
+            val decoded = codec.fromScale(encoded, BigInteger::class)
+
+            if (testValue != decoded) {
+                println("Expected: $testValue, decoded: $decoded")
+            }
+            assertEquals(testValue, decoded)
+        }
+    }
 }

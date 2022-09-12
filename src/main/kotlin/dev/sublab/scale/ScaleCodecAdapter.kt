@@ -2,6 +2,7 @@ package dev.sublab.scale
 
 import dev.sublab.scale.adapters.*
 import dev.sublab.scale.reflection.createFromType
+import java.math.BigInteger
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
@@ -208,6 +209,7 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
         provideUNumbers()
         provideList()
         provideString()
+        provideBigInteger()
 
         // Generic
         provideOptional()
@@ -234,6 +236,10 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
         setAdapter(UShortAdapter(), UShort::class)
         setAdapter(UIntAdapter(), UInt::class)
         setAdapter(ULongAdapter(), ULong::class)
+    }
+
+    private fun provideBigInteger() {
+        setAdapter(BigIntegerAdapter(adapterProvider), BigInteger::class)
     }
 
     private fun provideList() {
