@@ -1,16 +1,19 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.BooleanAdapter
-import dev.sublab.scale.adapters.OptionalBooleanAdapter
+import dev.sublab.scale.adapters.NullableBooleanAdapter
 import dev.sublab.scale.reflection.createGenericType
-import org.junit.jupiter.api.Test
 import kotlin.reflect.full.createType
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class TestBooleans {
+
+    private val testValues = listOf(true, false, true, false)
+    private val nullableTestValues = testValues + listOf(null)
+
     @Test
-    internal fun testBooleanAdapter() {
-        val testValues = listOf(true, false, true, false)
+    internal fun testAdapter() {
         val adapter = BooleanAdapter()
 
         for (testValue in testValues) {
@@ -25,13 +28,12 @@ internal class TestBooleans {
     }
 
     @Test
-    internal fun testBooleanCoding() {
-        val testValues = listOf(true, false, true, false)
-        val scaleCodec = ScaleCodec.default()
+    internal fun testCoding() {
+        val codec = ScaleCodec.default()
 
         for (testValue in testValues) {
-            val encoded = scaleCodec.toScale(testValue, Boolean::class)
-            val decoded = scaleCodec.fromScale(encoded, Boolean::class)
+            val encoded = codec.toScale(testValue, Boolean::class)
+            val decoded = codec.fromScale(encoded, Boolean::class)
 
             if (testValue != decoded) {
                 println("Expected: $testValue, decoded: $decoded")
@@ -40,12 +42,11 @@ internal class TestBooleans {
         }
     }
     @Test
-    internal fun testOptionalBooleanAdapter() {
-        val testValues = listOf(true, false, null)
-        val adapter = OptionalBooleanAdapter()
+    internal fun testNullableAdapter() {
+        val adapter = NullableBooleanAdapter()
         val type = Boolean::class.createType(nullable = true)
 
-        for (testValue in testValues) {
+        for (testValue in nullableTestValues) {
             val encoded = adapter.write(testValue, type)
             val decoded = adapter.read(encoded, type)
 
@@ -57,14 +58,13 @@ internal class TestBooleans {
     }
 
     @Test
-    internal fun testOptionalBooleanCoding() {
-        val testValues = listOf(true, false, null)
-        val scaleCodec = ScaleCodec.default()
+    internal fun testNullableCoding() {
+        val codec = ScaleCodec.default()
         val type = Boolean::class.createType(nullable = true)
 
         for (testValue in testValues) {
-            val encoded = scaleCodec.toScale(testValue, type)
-            val decoded = scaleCodec.fromScale<Boolean?>(encoded, type)
+            val encoded = codec.toScale(testValue, type)
+            val decoded = codec.fromScale<Boolean?>(encoded, type)
 
             if (testValue != decoded) {
                 println("Expected: $testValue, decoded: $decoded")
@@ -74,17 +74,30 @@ internal class TestBooleans {
     }
 
     @Test
-    internal fun testListOfBooleansCoding() {
-        val testValue = listOf(true, false, false, true, false)
-        val scaleCodec = ScaleCodec.default()
+    internal fun testListCoding() {
+        val codec = ScaleCodec.default()
         val type = List::class.createGenericType(Boolean::class)
 
-        val encodedValue = scaleCodec.toScale(testValue, type)
-        val decoded = scaleCodec.fromScale<List<Boolean>>(encodedValue, type)
+        val encodedValue = codec.toScale(testValues, type)
+        val decoded = codec.fromScale<List<Boolean>>(encodedValue, type)
 
-        if (testValue != decoded) {
-            println("Expected: $testValue, decoded: $decoded")
+        if (testValues != decoded) {
+            println("Expected: $testValues, decoded: $decoded")
         }
-        assertEquals(testValue, decoded)
+        assertEquals(testValues, decoded)
+    }
+
+    @Test
+    internal fun testListOfNullableCoding() {
+        val codec = ScaleCodec.default()
+        val type = List::class.createGenericType(Boolean::class.createType(nullable = true))
+
+        val encodedValue = codec.toScale(nullableTestValues, type)
+        val decoded = codec.fromScale<List<Boolean>>(encodedValue, type)
+
+        if (nullableTestValues != decoded) {
+            println("Expected: $nullableTestValues, decoded: $decoded")
+        }
+        assertEquals(nullableTestValues, decoded)
     }
 }

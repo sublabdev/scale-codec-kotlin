@@ -22,7 +22,7 @@ class BooleanAdapter: ScaleCodecAdapter<Boolean>() {
 }
 
 @Suppress("unused")
-class OptionalBooleanAdapter: ScaleCodecAdapter<Boolean?>() {
+class NullableBooleanAdapter: ScaleCodecAdapter<Boolean?>() {
     override fun read(reader: ByteArrayReader, type: KType) = parseBoolean(reader, mapOf(
         0 to null,
         1 to true,

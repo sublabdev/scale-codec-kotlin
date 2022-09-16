@@ -7,17 +7,19 @@ import kotlin.reflect.KTypeProjection
 import kotlin.reflect.full.createType
 
 @Suppress("unused")
-fun KClassifier.createGenericType(vararg classes: KClass<*>) = createType(
+fun KClassifier.createGenericType(vararg classes: KClass<*>, nullable: Boolean = false) = createType(
     arguments = classes.map {
         KTypeProjection.invariant(it.createType())
-    }
+    },
+    nullable = nullable
 )
 
 @Suppress("unused")
-fun KClassifier.createGenericType(vararg types: KType) = createType(
+fun KClassifier.createGenericType(vararg types: KType, nullable: Boolean = false) = createType(
     arguments = types.map {
         KTypeProjection.invariant(it)
-    }
+    },
+    nullable = nullable
 )
 
 /**
