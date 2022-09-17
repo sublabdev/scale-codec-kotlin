@@ -1,3 +1,3 @@
-package dev.sublab.scale
+package dev.sublab.scale.support
 
-const val TEST_REPEATS = 1000
+const val TEST_REPEATS = 1
