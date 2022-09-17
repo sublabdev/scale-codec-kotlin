@@ -1,14 +1,16 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.BigIntegerAdapter
-import dev.sublab.scale.support.TestCase
 import dev.sublab.scale.helpers.decodeHex
 import dev.sublab.scale.helpers.toHex
-import org.junit.jupiter.api.Test
+import dev.sublab.scale.support.BaseTest
+import dev.sublab.scale.support.TestCase
 import java.math.BigInteger
-import kotlin.test.assertEquals
+import kotlin.test.Test
 
-internal class TestBigInteger {
+internal class TestBigInteger: BaseTest<BigInteger>() {
+    override val type = BigInteger::class
+    override val adapter = BigIntegerAdapter(DefaultScaleCodecAdapterProvider())
 
     private val predefinedTestCases = listOf(
         TestCase(BigInteger("0"), "00"),
@@ -25,32 +27,16 @@ internal class TestBigInteger {
         TestCase(BigInteger("4592230960395125066"), "134a01e750bae1ba3f")
     )
 
+    override val testValues = predefinedTestCases.map { it.value }
+
     @Test
-    internal fun testBigIntegerAdapterEncoding() {
-        val adapter = BigIntegerAdapter(DefaultScaleCodecAdapterProvider())
+    internal fun testEncoding() {
         for (testCase in predefinedTestCases) {
             val encoded = adapter.write(testCase.value, BigInteger::class)
-
             if (!encoded.contentEquals(testCase.encoded.decodeHex())) {
                 println("Encoded ${testCase.value} to: ${encoded.toHex()}, expected: ${testCase.encoded}")
             }
             assert(encoded.contentEquals(testCase.encoded.decodeHex()))
         }
     }
-
-    @Test
-    internal fun testBigIntegerAdapterCoding() {
-        val adapter = BigIntegerAdapter(DefaultScaleCodecAdapterProvider())
-        for (testValue in predefinedTestCases.map { it.value }) {
-            val encoded = adapter.write(testValue, BigInteger::class)
-            val decoded = adapter.read(ByteArrayReader(encoded), BigInteger::class)
-
-            if (testValue != decoded) {
-                println("Expected: $testValue, decoded: $decoded")
-            }
-            assertEquals(testValue, decoded)
-        }
-    }
-
-    // TODO: resolve within codec
 }

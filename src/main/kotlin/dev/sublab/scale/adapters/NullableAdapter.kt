@@ -5,10 +5,10 @@ import dev.sublab.scale.reflection.*
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 
-class InvalidOptionalByteArrayException: Throwable()
+class InvalidNullableByteArrayException: Throwable()
 
 @Suppress("unused")
-class OptionalAdapter<T>(
+class NullableAdapter<T>(
     private val adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<T?>() {
 
@@ -20,7 +20,7 @@ class OptionalAdapter<T>(
             val wrappedType = type.classifier?.createType() ?: throw InvalidTypeException()
             adapterResolver.findAdapter<T>(wrappedType).read(reader, wrappedType)
         }
-        else -> throw InvalidOptionalByteArrayException()
+        else -> throw InvalidNullableByteArrayException()
     }
 
     @Throws(InvalidTypeException::class)

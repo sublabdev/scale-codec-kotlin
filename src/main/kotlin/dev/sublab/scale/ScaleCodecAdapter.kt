@@ -2,12 +2,13 @@ package dev.sublab.scale
 
 import dev.sublab.scale.adapters.*
 import dev.sublab.scale.reflection.createFromType
+import java.math.BigInteger
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 
 class NoAdapterKnown(val type: KType? = null): Throwable()
-class NoOptionalAdapterException: Throwable()
+class NoNullableAdapterException: Throwable()
 
 open class ScaleCodecReadException(reason: String?): Throwable(reason)
 open class ScaleCodecWriteException(reason: String?): Throwable(reason)
@@ -98,8 +99,8 @@ private class GenericAdapterProvider<T>(
 }
 
 abstract class ScaleCodecAdapterProvider {
-    private var optionalAdapter: AdapterProvider? = null
-    private var optionalAdapters: MutableMap<TypeHolder, AdapterProvider> = mutableMapOf()
+    private var nullableAdapter: AdapterProvider? = null
+    private var nullableAdapters: MutableMap<TypeHolder, AdapterProvider> = mutableMapOf()
     private var adapters: MutableMap<TypeHolder, AdapterProvider> = mutableMapOf()
     private var genericAdapters: MutableList<AdapterProvider> = mutableListOf()
 
@@ -114,18 +115,17 @@ abstract class ScaleCodecAdapterProvider {
         }
 
         if (type.isMarkedNullable) {
-            for (entry in optionalAdapters) {
+            for (entry in nullableAdapters) {
                 if (entry.key.conformsTo(type)) {
                     matchTypesCache[type] = entry.value
                     return entry.value
                 }
             }
 
-            if (optionalAdapter != null) {
-                return optionalAdapter
-            } else {
-                throw NoOptionalAdapterException()
-            }
+            return nullableAdapter?.let {
+                matchTypesCache[type] = it
+                it
+            } ?: throw NoNullableAdapterException()
         }
 
         for (entry in adapters) {
@@ -187,12 +187,12 @@ abstract class ScaleCodecAdapterProvider {
         adapters[TypeHolder(clazz = type)] = AdapterProvider(factory = factory)
     }
 
-    fun setOptionalAdapter(factory: ScaleCodecAdapterFactory) {
-        optionalAdapter = AdapterProvider(factory = factory)
+    fun setNullableAdapter(factory: ScaleCodecAdapterFactory) {
+        nullableAdapter = AdapterProvider(factory = factory)
     }
 
-    fun <T> setOptionalAdapter(adapter: ScaleCodecAdapter<T>, type: KType) {
-        optionalAdapters[TypeHolder(type = type)] = AdapterProvider(instance = adapter)
+    fun <T> setNullableAdapter(adapter: ScaleCodecAdapter<T>, type: KType) {
+        nullableAdapters[TypeHolder(type = type)] = AdapterProvider(instance = adapter)
     }
 
     fun addGenericAdapter(factory: ScaleCodecAdapterFactory) {
@@ -208,9 +208,10 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
         provideUNumbers()
         provideList()
         provideString()
+        provideBigInteger()
 
         // Generic
-        provideOptional()
+        provideNullable()
         provideEnum()
         provideStruct()
     }
@@ -219,7 +220,7 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
 
     private fun provideBoolean() {
         setAdapter(BooleanAdapter(), Boolean::class)
-        setOptionalAdapter(OptionalBooleanAdapter(), Boolean::class.createType(nullable = true))
+        setNullableAdapter(NullableBooleanAdapter(), Boolean::class.createType(nullable = true))
     }
 
     private fun provideNumbers() {
@@ -236,6 +237,10 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
         setAdapter(ULongAdapter(), ULong::class)
     }
 
+    private fun provideBigInteger() {
+        setAdapter(BigIntegerAdapter(adapterProvider), BigInteger::class)
+    }
+
     private fun provideList() {
         setAdapter(object: ScaleCodecAdapterFactory {
             @Suppress("UNCHECKED_CAST")
@@ -247,10 +252,10 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
         setAdapter(StringAdapter(this), String::class)
     }
 
-    private fun provideOptional() {
-        setOptionalAdapter(object: ScaleCodecAdapterFactory {
+    private fun provideNullable() {
+        setNullableAdapter(object: ScaleCodecAdapterFactory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T> make() = OptionalAdapter<T>(adapterProvider) as ScaleCodecAdapter<T>
+            override fun <T> make() = NullableAdapter<T>(adapterProvider) as ScaleCodecAdapter<T>
         })
     }
 
