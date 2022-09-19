@@ -97,18 +97,18 @@ abstract class BaseTest<T> {
         assertEquals(testValues, decoded)
     }
 
-//    @Test
-//    internal fun testListOfNullableCoding() {
-//        val nullableTestValues = nullableTestValues
-//
-//        val codec = ScaleCodec.default()
-//        val type = List::class.createGenericType(nullableType)
-//        val encoded = codec.toScale(nullableTestValues, type)
-//        val decoded = codec.fromScale<List<T?>>(encoded, type)
-//
-//        if (nullableTestValues != decoded) {
-//            println("Expected: $nullableTestValues, decoded: $decoded")
-//        }
-//        assertEquals(nullableTestValues, decoded)
-//    }
+    @Test
+    internal fun testListOfNullableCoding() {
+        val nullableTestValues = nullableTestValues
+
+        val codec = ScaleCodec.default()
+        val type = List::class.createGenericType(nullableType)
+        val encoded = codec.toScale(nullableTestValues, type)
+        val decoded = codec.fromScale<List<T?>>(encoded, type)
+
+        if (nullableTestValues != decoded) {
+            println("Expected: $nullableTestValues, decoded: $decoded")
+        }
+        assertEquals(nullableTestValues, decoded)
+    }
 }
