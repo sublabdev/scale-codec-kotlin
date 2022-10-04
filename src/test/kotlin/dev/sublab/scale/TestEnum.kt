@@ -1,6 +1,8 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.EnumAdapter
+import dev.sublab.scale.annotations.EnumCase
+import dev.sublab.scale.annotations.EnumClass
 import dev.sublab.scale.support.BaseTest
 import java.math.BigInteger
 
@@ -25,18 +27,18 @@ internal class TestEnums: BaseTest<TestEnum>() {
 }
 
 sealed class TestEnum {
-    data class Bool(val value: Boolean): TestEnum()
-    data class I8(val value: Byte): TestEnum()
-    data class I16(val value: Short): TestEnum()
-    data class I32(val value: Int): TestEnum()
-    data class I64(val value: Long): TestEnum()
-    data class U8(val value: UByte): TestEnum()
-    data class U16(val value: UShort): TestEnum()
-    data class U32(val value: UInt): TestEnum()
-    data class U64(val value: ULong): TestEnum()
-    data class Str(val value: String): TestEnum()
-    data class BigInt(val value: BigInteger): TestEnum()
-    data class Another(val value: TestEnum): TestEnum()
+    @EnumCase(0) data class Bool(val value: Boolean): TestEnum()
+    @EnumCase(1) data class I8(val value: Byte): TestEnum()
+    @EnumCase(2) data class I16(val value: Short): TestEnum()
+    @EnumCase(3) data class I32(val value: Int): TestEnum()
+    @EnumCase(4) data class I64(val value: Long): TestEnum()
+    @EnumCase(5) data class U8(val value: UByte): TestEnum()
+    @EnumCase(6) data class U16(val value: UShort): TestEnum()
+    @EnumCase(7) data class U32(val value: UInt): TestEnum()
+    @EnumCase(8) data class U64(val value: ULong): TestEnum()
+    @EnumCase(9) data class Str(val value: String): TestEnum()
+    @EnumCase(10) data class BigInt(val value: BigInteger): TestEnum()
+    @EnumCase(11) data class Another(val value: TestEnum): TestEnum()
 }
 
 internal class TestBasicEnums: BaseTest<TestBasicEnum>() {

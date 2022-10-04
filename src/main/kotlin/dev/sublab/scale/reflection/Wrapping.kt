@@ -37,3 +37,9 @@ fun KClassifier.createFromType(type: KType) = try {
 } catch (e: Exception) {
     null
 }
+
+fun KClassifier.nullableCreateType() = try {
+    createType()
+} catch (e: Exception) {
+    null
+}

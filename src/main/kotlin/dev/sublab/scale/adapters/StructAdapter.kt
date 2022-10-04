@@ -13,12 +13,12 @@ class StructAdapter<T: Any>(
 
     @Suppress("UNCHECKED_CAST")
     override fun read(reader: ByteArrayReader, type: KType): T {
-        val kClass = type.classifier as? KClass<T> ?: throw InvalidTypeException()
+        val kClass = type.classifier as? KClass<T> ?: throw InvalidTypeException(type)
 
         val dataInstance = readDataClass(reader, kClass)
         if (dataInstance != null) return dataInstance
 
-        val obj = (kClass.createInstance() as? T) ?: throw InvalidTypeException()
+        val obj = (kClass.createInstance() as? T) ?: throw InvalidTypeException(type)
 
         val properties = kClass.memberProperties.mapNotNull { it as? KMutableProperty1<T, Any> }
         for (property in properties) {
@@ -57,7 +57,6 @@ class StructAdapter<T: Any>(
             val propertyType = property.returnType
             val value = property.get(obj) ?: throw NoValueReturned(kClass, property)
             byteArray += adapterResolver.findAdapter<Any>(propertyType).write(value, propertyType)
-//            println("Property ${property.name} value ${property.get(obj)} written: ${adapterResolver.findAdapter<Any>(propertyType).write(value, propertyType).toHex()}")
         }
 
         return byteArray

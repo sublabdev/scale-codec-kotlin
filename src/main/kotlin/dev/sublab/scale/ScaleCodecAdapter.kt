@@ -1,11 +1,15 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.*
+import dev.sublab.scale.annotations.EnumClass
 import dev.sublab.scale.reflection.createFromType
+import dev.sublab.scale.reflection.nullableCreateType
+import java.lang.Exception
 import java.math.BigInteger
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
+import kotlin.reflect.full.findAnnotation
 
 class NoAdapterKnown(val type: KType? = null): Throwable()
 class NoNullableAdapterException: Throwable()
@@ -71,11 +75,13 @@ private class GenericAdapterProvider<T>(
             val adapter = provider.get<T>() ?: continue
 
             val offsetBeforeTry = reader.offset
-            val obj = kotlin.runCatching { adapter.read(reader, type) }.getOrNull()
-            if (obj != null) {
+
+            runCatching {
+                adapter.read(reader, type)
+            }.onSuccess {
                 onMatch(provider)
-                return obj
-            } else {
+                return it
+            }.onFailure {
                 // Reset offset to position before failed reading
                 reader.offset = offsetBeforeTry
             }
@@ -98,10 +104,13 @@ private class GenericAdapterProvider<T>(
     }
 }
 
+private typealias ConditionalAdapterProvider = (KType) -> AdapterProvider?
+
 abstract class ScaleCodecAdapterProvider {
     private var nullableAdapter: AdapterProvider? = null
     private var nullableAdapters: MutableMap<TypeHolder, AdapterProvider> = mutableMapOf()
     private var adapters: MutableMap<TypeHolder, AdapterProvider> = mutableMapOf()
+    private var conditionalAdapters: MutableList<ConditionalAdapterProvider> = mutableListOf()
     private var genericAdapters: MutableList<AdapterProvider> = mutableListOf()
 
     // Find
@@ -128,6 +137,11 @@ abstract class ScaleCodecAdapterProvider {
             } ?: throw NoNullableAdapterException()
         }
 
+        findConditionalProvider(type)?.let {
+            matchTypesCache[type] = it
+            return it
+        }
+
         for (entry in adapters) {
             if (entry.key.conformsTo(type)) {
                 matchTypesCache[type] = entry.value
@@ -143,6 +157,11 @@ abstract class ScaleCodecAdapterProvider {
             return matchClassesCache[type]
         }
 
+        findConditionalProvider(type)?.let {
+            matchClassesCache[type] = it
+            return it
+        }
+
         for (entry in adapters) {
             if (entry.key.conformsTo(type)) {
                 matchClassesCache[type] = entry.value
@@ -151,6 +170,14 @@ abstract class ScaleCodecAdapterProvider {
         }
 
         return null
+    }
+
+    private fun findConditionalProvider(type: KType) = conditionalAdapters.firstNotNullOfOrNull {
+        it(type)
+    }
+
+    private fun findConditionalProvider(type: KClass<*>) = conditionalAdapters.firstNotNullOfOrNull {
+        type.nullableCreateType()?.let { kType -> it(kType) }
     }
 
     private fun <T> tryGenericProviders(type: KType) = GenericAdapterProvider<T>(genericAdapters) {
@@ -193,6 +220,18 @@ abstract class ScaleCodecAdapterProvider {
 
     fun <T> setNullableAdapter(adapter: ScaleCodecAdapter<T>, type: KType) {
         nullableAdapters[TypeHolder(type = type)] = AdapterProvider(instance = adapter)
+    }
+
+    fun <T> addConditionalAdapter(adapter: ScaleCodecAdapter<T>, condition: (KType) -> Boolean) {
+        conditionalAdapters.add {
+            if (condition(it)) AdapterProvider(instance = adapter) else null
+        }
+    }
+
+    fun addConditionalAdapter(factory: ScaleCodecAdapterFactory, condition: (KType) -> Boolean) {
+        conditionalAdapters.add {
+            if (condition(it)) AdapterProvider(factory = factory) else null
+        }
     }
 
     fun addGenericAdapter(factory: ScaleCodecAdapterFactory) {
@@ -260,10 +299,16 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
     }
 
     private fun provideEnum() {
-        addGenericAdapter(object: ScaleCodecAdapterFactory {
+        val factory = object: ScaleCodecAdapterFactory {
             @Suppress("UNCHECKED_CAST")
             override fun <T> make() = EnumAdapter<Any>(adapterProvider) as ScaleCodecAdapter<T>
-        })
+        }
+
+        addConditionalAdapter(factory = factory) { type ->
+             type.findAnnotation<EnumClass>() != null
+        }
+
+        addGenericAdapter(factory)
     }
 
     private fun provideStruct() {

@@ -1,12 +1,14 @@
 package dev.sublab.scale.adapters
 
 import dev.sublab.scale.*
+import dev.sublab.scale.annotations.EnumCase
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
+import kotlin.reflect.full.findAnnotation
 
 class InvalidTypeException(type: KType): Throwable()
-class InvalidEnumClassException(type: KClass<*>, obj: Any): Throwable()
+class InvalidEnumClassException(kClass: KClass<*>? = null, type: KType? = null, obj: Any): Throwable()
 
 class EnumAdapter<T: Any>(
     private val adapterResolver: ScaleCodecAdapterProvider
@@ -21,7 +23,11 @@ class EnumAdapter<T: Any>(
         if (enumInstance != null) return enumInstance
 
         val index = readIndex(reader)
-        val nestedClass = kClass.nestedClasses.elementAt(index)
+        val nestedClass = kClass.nestedClasses.firstOrNull {
+            it.findAnnotation<EnumCase>()?.index == index
+        } ?: run {
+            throw InvalidEnumClassException(type = type, obj = index)
+        }
 
         // Read as direct "nestedClass" type, but convert to T as enum superclass type
         return adapterResolver.findAdapter(nestedClass).read(reader, nestedClass.createType()) as T
@@ -34,7 +40,7 @@ class EnumAdapter<T: Any>(
 
         val index = readIndex(reader)
         if (index < 0 || index >= type.java.enumConstants.size)
-            throw InvalidEnumClassException(type, index)
+            throw InvalidEnumClassException(kClass = type, obj = index)
 
         return type.java.enumConstants[index] as T
     }
@@ -49,15 +55,14 @@ class EnumAdapter<T: Any>(
         val writtenData = writeEnumClass(obj, kClass)
         if (writtenData != null) return writtenData
 
-        if (!kClass.nestedClasses.contains(obj::class)) {
-            throw InvalidTypeException(type)
-        }
-
         var byteArray = byteArrayOf()
 
         // Write index
-        val index = kClass.nestedClasses.indexOf(obj::class).toUByte()
-        byteArray += adapterResolver.findAdapter(UByte::class).write(index, UByte::class)
+        val index = kClass.nestedClasses
+            .firstOrNull { it == obj::class }
+            ?.let { it.findAnnotation<EnumCase>()?.index }
+            ?: throw InvalidEnumClassException(type = type, obj = obj)
+        byteArray += adapterResolver.findAdapter(UByte::class).write(index.toUByte(), UByte::class)
 
         // Write value
         val enumCaseType = obj::class.createType()
@@ -71,7 +76,7 @@ class EnumAdapter<T: Any>(
         if (!type.java.isEnum) return null
 
         val index = type.java.enumConstants.indexOf(obj)
-        if (index == -1) throw InvalidEnumClassException(type, obj)
+        if (index == -1) throw InvalidEnumClassException(kClass = type, obj = obj)
 
         return adapterResolver.findAdapter(UByte::class).write(index.toUByte(), UByte::class)
     }

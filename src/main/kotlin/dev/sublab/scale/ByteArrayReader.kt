@@ -10,11 +10,15 @@ class ByteArrayReader(
     @Throws(IndexOutOfBoundsException::class)
     fun read(size: Int): ByteArray {
         val endIndex = offset + size
-        val result = byteArray.copyOfRange(offset, endIndex)
 
-        // if IndexOutOfBoundsException not thrown
-        offset += size
-        return result
+        try {
+            val result = byteArray.copyOfRange(offset, endIndex)
+            offset += size
+            return result
+        } catch (e: Exception) {
+            // Re-throw for debugging purposes
+            throw e
+        }
     }
 
     fun readByte() = read(1)[0]
