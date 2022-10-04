@@ -16,8 +16,8 @@ class NullableAdapter<T>(
     override fun read(reader: ByteArrayReader, type: KType): T? = when (reader.readByte().toInt()) {
         0 -> null
         1 -> {
-            if (!type.isMarkedNullable) throw InvalidTypeException()
-            val wrappedType = type.classifier?.createType() ?: throw InvalidTypeException()
+            if (!type.isMarkedNullable) throw InvalidTypeException(type)
+            val wrappedType = type.classifier?.createType() ?: throw InvalidTypeException(type)
             adapterResolver.findAdapter<T>(wrappedType).read(reader, wrappedType)
         }
         else -> throw InvalidNullableByteArrayException()
@@ -25,8 +25,8 @@ class NullableAdapter<T>(
 
     @Throws(InvalidTypeException::class)
     override fun write(obj: T?, type: KType): ByteArray {
-        if (!type.isMarkedNullable) throw InvalidTypeException()
-        val wrappedType = type.classifier?.createType() ?: throw InvalidTypeException()
+        if (!type.isMarkedNullable) throw InvalidTypeException(type)
+        val wrappedType = type.classifier?.createType() ?: throw InvalidTypeException(type)
 
         var byteArray = byteArrayOf(obj?.let { 1 } ?: 0)
         obj?.let {

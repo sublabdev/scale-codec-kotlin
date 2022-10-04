@@ -38,3 +38,20 @@ sealed class TestEnum {
     data class BigInt(val value: BigInteger): TestEnum()
     data class Another(val value: TestEnum): TestEnum()
 }
+
+internal class TestBasicEnums: BaseTest<TestBasicEnum>() {
+    override val type = TestBasicEnum::class
+    override val adapter = EnumAdapter<TestBasicEnum>(DefaultScaleCodecAdapterProvider())
+
+    override val testValues get() = listOf(
+        TestBasicEnum.One,
+        TestBasicEnum.Two,
+        TestBasicEnum.Three
+    )
+}
+
+enum class TestBasicEnum {
+    One,
+    Two,
+    Three
+}

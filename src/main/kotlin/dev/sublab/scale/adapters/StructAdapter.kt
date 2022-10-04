@@ -48,6 +48,7 @@ class StructAdapter<T: Any>(
     @Throws(NoValueReturned::class, NoReadableVariableFound::class)
     override fun write(obj: T, type: KType): ByteArray {
         val kClass = (obj::class as KClass<T>)
+
         val dataWritten = writeDataClass(obj, kClass)
         if (dataWritten != null) return dataWritten
 
