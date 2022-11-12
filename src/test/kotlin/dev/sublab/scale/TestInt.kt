@@ -1,6 +1,7 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.IntAdapter
+import dev.sublab.scale.helpers.decodeHex
 import dev.sublab.scale.support.BaseTest
 import dev.sublab.scale.support.TEST_REPEATS
 import kotlin.test.Test
@@ -25,5 +26,15 @@ class TestInt: BaseTest<Int>() {
             println("Expected: $testValue, decoded: $decoded")
         }
         assertEquals(testValue, decoded)
+    }
+
+    @Test
+    internal fun testKusamaMagicNumber() {
+        val encoded = "6d6574610e4d0c00".decodeHex()
+        val magicNumber = 1635018093u
+        val scaleCodec = ScaleCodec.default()
+
+        val decoded = scaleCodec.fromScale(encoded, UInt::class)
+        assertEquals(magicNumber, decoded)
     }
 }

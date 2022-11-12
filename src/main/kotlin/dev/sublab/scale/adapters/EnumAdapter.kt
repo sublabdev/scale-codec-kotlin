@@ -7,7 +7,10 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.findAnnotation
 
+@Suppress("unused")
 class InvalidTypeException(type: KType): Throwable()
+
+@Suppress("unused")
 class InvalidEnumClassException(kClass: KClass<*>? = null, type: KType? = null, obj: Any): Throwable()
 
 class EnumAdapter<T: Any>(

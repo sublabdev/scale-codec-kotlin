@@ -2,7 +2,7 @@ package dev.sublab.scale
 
 import dev.sublab.scale.adapters.EnumAdapter
 import dev.sublab.scale.annotations.EnumCase
-import dev.sublab.scale.annotations.EnumClass
+import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
 import dev.sublab.scale.support.BaseTest
 import java.math.BigInteger
 

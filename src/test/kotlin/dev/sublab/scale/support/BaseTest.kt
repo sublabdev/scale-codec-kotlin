@@ -24,17 +24,45 @@ abstract class BaseTest<T> {
 
     private val nullableTestValues get() = testValues + listOf(null)
 
+    open fun equals(lhs: T, rhs: T) = lhs == rhs
+
+    @JvmName("equalsNullable")
+    private fun equals(lhs: T?, rhs: T?) =
+        if (lhs == null && rhs == null) true
+        else if (lhs != null && rhs != null) equals(lhs, rhs)
+        else false
+
+    private fun equals(lhs: List<T>, rhs: List<T>): Boolean {
+        if (lhs.size != rhs.size) return false
+        return lhs
+            .mapIndexed { index, left -> equals(rhs[index], left) }
+            .fold(true) { result, it -> result && it }
+    }
+
+    @JvmName("equalsNullable")
+    private fun equals(lhs: List<T?>, rhs: List<T?>): Boolean {
+        if (lhs.size != rhs.size) return false
+        return lhs
+            .mapIndexed { index, left -> equals(rhs[index], left) }
+            .fold(true) { result, it -> result && it }
+    }
+
     @Test
-    fun testAdapter() {
+    internal fun testComp() {
+        assert(equals(null, null))
+    }
+
+    @Test
+    internal fun testAdapter() {
         val testValues = testValues
         for (testValue in testValues) {
             val encoded = adapter.write(testValue, baseType)
             val decoded = adapter.read(encoded, baseType)
 
-            if (testValue != decoded) {
+            if (!equals(testValue, decoded)) {
                 println("Expected: $testValue, decoded: $decoded")
             }
-            assertEquals(testValue, decoded)
+            assert(equals(testValue, decoded))
         }
     }
 
@@ -47,10 +75,10 @@ abstract class BaseTest<T> {
             val encoded = adapter.write(testValue, nullableType)
             val decoded = adapter.read(encoded, nullableType)
 
-            if (testValue != decoded) {
+            if (!equals(testValue, decoded)) {
                 println("Expected: $testValue, decoded: $decoded")
             }
-            assertEquals(testValue, decoded)
+            assert(equals(testValue, decoded))
         }
     }
 
@@ -61,10 +89,10 @@ abstract class BaseTest<T> {
             val encoded = codec.toScale(testValue, baseType)
             val decoded = codec.fromScale<T>(encoded, baseType)
 
-            if (testValue != decoded) {
+            if (!equals(testValue, decoded)) {
                 println("Expected: $testValue, decoded: $decoded")
             }
-            assertEquals(testValue, decoded)
+            assert(equals(testValue, decoded))
         }
     }
 
@@ -75,10 +103,10 @@ abstract class BaseTest<T> {
             val encoded = codec.toScale(testValue, nullableType)
             val decoded = codec.fromScale<T?>(encoded, nullableType)
 
-            if (testValue != decoded) {
+            if (!equals(testValue, decoded)) {
                 println("Expected: $testValue, decoded: $decoded")
             }
-            assertEquals(testValue, decoded)
+            assert(equals(testValue, decoded))
         }
     }
 
@@ -91,10 +119,10 @@ abstract class BaseTest<T> {
         val encoded = codec.toScale(testValues, type)
         val decoded = codec.fromScale<List<T>>(encoded, type)
 
-        if (testValues != decoded) {
+        if (!equals(testValues, decoded)) {
             println("Expected: $testValues, decoded: $decoded")
         }
-        assertEquals(testValues, decoded)
+        assert(equals(testValues, decoded))
     }
 
     @Test
@@ -106,9 +134,9 @@ abstract class BaseTest<T> {
         val encoded = codec.toScale(nullableTestValues, type)
         val decoded = codec.fromScale<List<T?>>(encoded, type)
 
-        if (nullableTestValues != decoded) {
+        if (!equals(nullableTestValues, decoded)) {
             println("Expected: $nullableTestValues, decoded: $decoded")
         }
-        assertEquals(nullableTestValues, decoded)
+        assert(equals(nullableTestValues, decoded))
     }
 }

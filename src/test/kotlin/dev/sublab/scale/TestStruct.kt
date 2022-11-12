@@ -1,6 +1,7 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.adapters.StructAdapter
+import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
 import java.math.BigInteger
 import kotlin.reflect.full.createType
 import kotlin.test.Test

@@ -1,26 +1,21 @@
 package dev.sublab.scale.adapters
 
 import dev.sublab.scale.*
+import dev.sublab.scale.reflection.listOfBytesType
 import kotlin.reflect.KType
 import kotlin.reflect.KTypeProjection
 import kotlin.reflect.full.createType
-
-private fun listOfBytesType() = List::class.createType(
-    arguments = listOf(
-        KTypeProjection.invariant(Byte::class.createType())
-    )
-)
 
 @Suppress("unused")
 class StringAdapter(
     adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<String>() {
 
-    private val adapter = ListAdapter<Byte>(adapterResolver)
+    private val adapter = ByteArrayAdapter(adapterResolver)
 
     override fun read(reader: ByteArrayReader, type: KType) = String(
-        adapter.read(reader, listOfBytesType()).toByteArray()
+        adapter.read(reader, listOfBytesType())
     )
 
-    override fun write(obj: String, type: KType) = adapter.write(obj.toByteArray().toList(), listOfBytesType())
+    override fun write(obj: String, type: KType) = adapter.write(obj.toByteArray(), listOfBytesType())
 }

@@ -1,6 +1,7 @@
 package dev.sublab.scale
 
 import dev.sublab.scale.dataContainers.ScaleByteArrayDataContainer
+import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
 
 data class ScaleCodecSettings<Data: Any>(
     val dataContainer: ScaleDataContainer<Data>,
