@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 class InvalidNumericType: Throwable()
 
 internal fun byteSize(type: KClass<*>) = when (type) {
-    UInt8::class, UByte::class, Int8::class, UInt8::class -> Byte.SIZE_BYTES
+    Byte::class, UByte::class, Int8::class, UInt8::class -> Byte.SIZE_BYTES
     Short::class, UShort::class, Int16::class, UInt16::class -> Short.SIZE_BYTES
     Int::class, UInt::class, Int32::class, UInt32::class -> Int.SIZE_BYTES
     Long::class, ULong::class, Int64::class, UInt64::class -> Long.SIZE_BYTES
