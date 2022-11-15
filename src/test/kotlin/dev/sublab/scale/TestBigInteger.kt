@@ -1,9 +1,9 @@
 package dev.sublab.scale
 
+import dev.sublab.hashing.decodeHex
+import dev.sublab.hashing.toHex
 import dev.sublab.scale.adapters.BigIntegerAdapter
 import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
-import dev.sublab.scale.helpers.decodeHex
-import dev.sublab.scale.helpers.toHex
 import dev.sublab.scale.support.BaseTest
 import dev.sublab.scale.support.TestCase
 import java.math.BigInteger

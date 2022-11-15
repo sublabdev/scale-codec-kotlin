@@ -9,11 +9,13 @@ group = "dev.sublab"
 version = "1.0.0"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("dev.sublab:hashing-kotlin:1.0.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
     implementation("org.jetbrains.kotlin:kotlin-test:1.7.21")
 }
