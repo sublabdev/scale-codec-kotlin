@@ -1,5 +1,6 @@
 package dev.sublab.scale
 
+import dev.sublab.common.numerics.*
 import dev.sublab.scale.adapters.StructAdapter
 import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
 import java.math.BigInteger
@@ -142,14 +143,14 @@ internal class TestStructs {
 
 data class TestDataStruct(
     val bool: Boolean,
-    val i8: Byte,
-    val i16: Short,
-    val i32: Int,
-    val i64: Long,
-    val u8: UByte,
-    val u16: UShort,
-    val u32: UInt,
-    val u64: ULong,
+    val i8: Int8,
+    val i16: Int16,
+    val i32: Int32,
+    val i64: Int64,
+    val u8: UInt8,
+    val u16: UInt16,
+    val u32: UInt32,
+    val u64: UInt64,
     val str: String,
     val bigInt: BigInteger
 ): Comparable<TestDataStruct> {
@@ -191,14 +192,14 @@ data class TestDataStruct(
 
 class TestStruct: Comparable<TestStruct> {
     val bool: Boolean = true
-    val i8: Byte = 120.toByte()
-    val i16: Short = 1024
-    val i32: Int = -22048
-    val i64: Long = -234234
-    val u8: UByte = 250.toUByte()
-    val u16: UShort = 512u
-    val u32: UInt = 22048u
-    val u64: ULong = 234234u
+    val i8: Int8 = 120.toByte()
+    val i16: Int16 = 1024
+    val i32: Int32 = -22048
+    val i64: Int64 = -234234
+    val u8: UInt8 = 250.toUByte()
+    val u16: UInt16 = 512u
+    val u32: UInt32 = 22048u
+    val u64: UInt64 = 234234u
     val str: String = "string"
     val bigInt: BigInteger = BigInteger.valueOf(253521)
 

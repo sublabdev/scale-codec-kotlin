@@ -1,7 +1,7 @@
 package dev.sublab.scale
 
+import dev.sublab.common.numerics.UInt256
 import dev.sublab.scale.adapters.UInt256Adapter
-import dev.sublab.scale.dataTypes.UInt256
 import dev.sublab.scale.support.BaseTest
 import dev.sublab.scale.support.TEST_REPEATS
 import java.math.BigInteger

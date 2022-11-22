@@ -1,7 +1,7 @@
 package dev.sublab.scale
 
+import dev.sublab.common.numerics.Int8
 import dev.sublab.scale.adapters.Int8Adapter
-import dev.sublab.scale.dataTypes.Int8
 import dev.sublab.scale.support.BaseTest
 import dev.sublab.scale.support.TEST_REPEATS
 

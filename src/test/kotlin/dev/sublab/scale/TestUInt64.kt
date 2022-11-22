@@ -1,7 +1,7 @@
 package dev.sublab.scale
 
+import dev.sublab.common.numerics.UInt64
 import dev.sublab.scale.adapters.UInt64Adapter
-import dev.sublab.scale.dataTypes.UInt64
 import dev.sublab.scale.support.BaseTest
 import dev.sublab.scale.support.TEST_REPEATS
 

@@ -1,7 +1,6 @@
 package dev.sublab.scale
 
-import dev.sublab.hashing.decodeHex
-import dev.sublab.hashing.toHex
+import dev.sublab.hex.hex
 import dev.sublab.scale.adapters.BigIntegerAdapter
 import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
 import dev.sublab.scale.support.BaseTest
@@ -34,10 +33,10 @@ internal class TestBigInteger: BaseTest<BigInteger>() {
     internal fun testEncoding() {
         for (testCase in predefinedTestCases) {
             val encoded = adapter.write(testCase.value, BigInteger::class)
-            if (!encoded.contentEquals(testCase.encoded.decodeHex())) {
-                println("Encoded ${testCase.value} to: ${encoded.toHex()}, expected: ${testCase.encoded}")
+            if (!encoded.contentEquals(testCase.encoded.hex.decode())) {
+                println("Encoded ${testCase.value} to: ${encoded.hex.encode()}, expected: ${testCase.encoded}")
             }
-            assert(encoded.contentEquals(testCase.encoded.decodeHex()))
+            assert(encoded.contentEquals(testCase.encoded.hex.decode()))
         }
     }
 }

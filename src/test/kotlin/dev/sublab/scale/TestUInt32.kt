@@ -1,7 +1,7 @@
 package dev.sublab.scale
 
+import dev.sublab.common.numerics.UInt32
 import dev.sublab.scale.adapters.UInt32Adapter
-import dev.sublab.scale.dataTypes.UInt32
 import dev.sublab.scale.support.BaseTest
 import dev.sublab.scale.support.TEST_REPEATS
 import kotlin.test.Test

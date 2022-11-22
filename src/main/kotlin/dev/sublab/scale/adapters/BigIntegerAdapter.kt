@@ -1,5 +1,6 @@
 package dev.sublab.scale.adapters
 
+import dev.sublab.common.numerics.*
 import dev.sublab.scale.*
 import java.math.BigInteger
 import kotlin.experimental.and
@@ -40,18 +41,18 @@ private fun ByteArray.fillingWithZeroesUntilWidth(width: Int): ByteArray {
 
 fun ByteArray.clampedToBigInteger() = BigInteger(when {
     size <= UByte.SIZE_BYTES -> first().toUByte()
-    size <= UShort.SIZE_BYTES -> fillingWithZeroesUntilWidth(UShort.SIZE_BYTES).toUShort()
-    size <= UInt.SIZE_BYTES -> fillingWithZeroesUntilWidth(UInt.SIZE_BYTES).toUInt()
-    size <= ULong.SIZE_BYTES -> fillingWithZeroesUntilWidth(ULong.SIZE_BYTES).toULong()
+    size <= UInt16.SIZE_BYTES -> fillingWithZeroesUntilWidth(UInt16.SIZE_BYTES).toUInt16()
+    size <= UInt32.SIZE_BYTES -> fillingWithZeroesUntilWidth(UInt32.SIZE_BYTES).toUInt32()
+    size <= UInt64.SIZE_BYTES -> fillingWithZeroesUntilWidth(UInt64.SIZE_BYTES).toUInt64()
     else -> BigInteger(this)
 }.toString())
 
 private fun BigInteger.toClampedByteArray(): ByteArray {
     val byteArray = when {
-        this < BigInteger((1 shl UByte.SIZE_BITS).toString()) -> toByte().toUByte().toScaleByteArray()
-        this < BigInteger((1 shl UShort.SIZE_BITS).toString()) -> toShort().toUShort().toScaleByteArray()
-        this < BigInteger((1 shl UInt.SIZE_BITS).toString()) -> toInt().toUInt().toScaleByteArray()
-        this < BigInteger((1 shl ULong.SIZE_BITS).toString()) -> toLong().toULong().toScaleByteArray()
+        this < BigInteger((1 shl UByte.SIZE_BITS).toString()) -> toByte().toUByte().toByteArray()
+        this < BigInteger((1 shl UInt16.SIZE_BITS).toString()) -> toShort().toUShort().toByteArray()
+        this < BigInteger((1 shl UInt32.SIZE_BITS).toString()) -> toInt().toUInt().toByteArray()
+        this < BigInteger((1 shl UInt64.SIZE_BITS).toString()) -> toLong().toULong().toByteArray()
         else -> toByteArray().reversedArray()
     }
 

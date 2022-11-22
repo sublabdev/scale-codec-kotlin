@@ -5,7 +5,7 @@ import dev.sublab.scale.ScaleCodecAdapterFactory
 import dev.sublab.scale.ScaleCodecAdapterProvider
 import dev.sublab.scale.adapters.*
 import dev.sublab.scale.annotations.EnumClass
-import dev.sublab.scale.dataTypes.*
+import dev.sublab.common.numerics.*
 import java.math.BigInteger
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.findAnnotation
