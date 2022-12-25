@@ -4,13 +4,13 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 
+@Suppress("unused")
 class ScaleCodec<Data: Any>(
     var settings: ScaleCodecSettings<Data>
 ) {
     companion object {
-        fun default() = ScaleCodec(
-            settings = ScaleCodecSettings.default()
-        )
+        fun default() = ScaleCodec(settings = ScaleCodecSettings.default())
+        fun hex() = ScaleCodec(settings = ScaleCodecSettings.hex())
     }
 
     private fun fromData(data: Data) = settings.dataContainer.toByteArray(data)
