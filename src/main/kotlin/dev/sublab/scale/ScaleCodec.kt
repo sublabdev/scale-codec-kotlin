@@ -13,8 +13,8 @@ class ScaleCodec<Data: Any>(
         fun hex() = ScaleCodec(settings = ScaleCodecSettings.hex())
     }
 
-    private fun fromData(data: Data) = settings.dataContainer.toByteArray(data)
-    private fun toData(byteArray: ByteArray) = settings.dataContainer.fromByteArray(byteArray)
+    internal fun fromData(data: Data) = settings.dataContainer.toByteArray(data)
+    internal fun toData(byteArray: ByteArray) = settings.dataContainer.fromByteArray(byteArray)
 
     /**
      * This method deserializes object of given Kotlin type
@@ -44,4 +44,9 @@ class ScaleCodec<Data: Any>(
     @Throws
     fun <T: Any> toScale(obj: T, type: KClass<T>)
         = toScale(obj, type.createType())
+
+    /**
+     * Grouped scale encoding
+     */
+    fun transaction() = ScaleCodecTransaction(this)
 }

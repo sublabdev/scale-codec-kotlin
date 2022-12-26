@@ -19,6 +19,7 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
         provideList()
         provideString()
         provideBigInteger()
+        provideByteArray()
 
         // Generic
         provideNullable()
@@ -63,6 +64,10 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
 
     private fun provideBigInteger() {
         setAdapter(BigIntegerAdapter(adapterProvider), BigInteger::class)
+    }
+
+    private fun provideByteArray() {
+        setAdapter(ByteArrayAdapter(adapterProvider), ByteArray::class)
     }
 
     private fun provideList() {
