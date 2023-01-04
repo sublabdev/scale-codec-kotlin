@@ -13,15 +13,19 @@ open class ScaleCodecWriteException(reason: String?): Throwable(reason)
 
 abstract class ScaleCodecAdapter<T> {
     @Throws(ScaleCodecReadException::class)
-    fun read(byteArray: ByteArray, type: KType): T = read(ByteArrayReader(byteArray), type)
+    fun read(byteArray: ByteArray, type: KType, annotations: List<Annotation> = listOf()): T = read(
+        ByteArrayReader(byteArray),
+        type
+    )
 
     // Implement in adapters
 
     @Throws(ScaleCodecReadException::class)
-    abstract fun read(reader: ByteArrayReader, type: KType): T
+    abstract fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation> = listOf()): T
 
     @Throws(ScaleCodecWriteException::class)
-    abstract fun write(obj: T, type: KType): ByteArray
+    abstract fun write(obj: T, type: KType, annotations: List<Annotation> = listOf()): ByteArray
+
 }
 
 @Throws(ScaleCodecReadException::class)

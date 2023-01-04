@@ -1,9 +1,6 @@
 package dev.sublab.scale.reflection
 
-import kotlin.reflect.KClass
-import kotlin.reflect.KClassifier
-import kotlin.reflect.KType
-import kotlin.reflect.KTypeProjection
+import kotlin.reflect.*
 import kotlin.reflect.full.createType
 
 @Suppress("unused")
@@ -43,3 +40,23 @@ fun KClassifier.nullableCreateType() = try {
 } catch (e: Exception) {
     null
 }
+
+//fun KParameter.annotatedType() = try {
+//    type.classifier?.createType(
+//        arguments = type.arguments,
+//        nullable = type.isMarkedNullable,
+//        annotations = type.annotations.union(annotations).toList()
+//    )
+//} catch (e: Exception) {
+//    null
+//}
+
+//fun <V> KProperty<V>.annotatedReturnType() = try {
+//    returnType.classifier?.createType(
+//        arguments = returnType.arguments,
+//        nullable = returnType.isMarkedNullable,
+//        annotations = returnType.annotations.union(annotations).toList()
+//    )
+//} catch (e: Exception) {
+//    null
+//}

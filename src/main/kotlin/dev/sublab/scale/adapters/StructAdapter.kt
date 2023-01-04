@@ -12,7 +12,7 @@ class StructAdapter<T: Any>(
 ): ScaleCodecAdapter<T>() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun read(reader: ByteArrayReader, type: KType): T {
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>): T {
         val kClass = type.classifier as? KClass<T> ?: throw InvalidTypeException(type)
 
         val dataInstance = readDataClass(reader, kClass)
@@ -23,7 +23,8 @@ class StructAdapter<T: Any>(
         val properties = kClass.memberProperties.mapNotNull { it as? KMutableProperty1<T, Any> }
         for (property in properties) {
             val propertyType = property.returnType
-            val value = adapterResolver.findAdapter<Any>(propertyType).read(reader, propertyType)
+            val value = adapterResolver.findAdapter<Any>(propertyType)
+                .read(reader, propertyType, property.annotations)
             property.set(obj, value)
         }
 
@@ -38,7 +39,7 @@ class StructAdapter<T: Any>(
         for (parameter in constructor.parameters) {
             val parameterType = parameter.type
             val adapter = adapterResolver.findAdapter<Any>(parameterType)
-            injection[parameter] = adapter.read(reader, parameterType)
+            injection[parameter] = adapter.read(reader, parameterType, parameter.annotations)
         }
 
         return constructor.callBy(injection)
@@ -46,7 +47,7 @@ class StructAdapter<T: Any>(
 
     @Suppress("UNCHECKED_CAST")
     @Throws(NoValueReturned::class, NoReadableVariableFound::class)
-    override fun write(obj: T, type: KType): ByteArray {
+    override fun write(obj: T, type: KType, annotations: List<Annotation>): ByteArray {
         val kClass = (obj::class as KClass<T>)
 
         val dataWritten = writeDataClass(obj, kClass)
@@ -56,7 +57,7 @@ class StructAdapter<T: Any>(
         for (property in kClass.memberProperties) {
             val propertyType = property.returnType
             val value = property.get(obj) ?: throw NoValueReturned(kClass, property)
-            byteArray += adapterResolver.findAdapter<Any>(propertyType).write(value, propertyType)
+            byteArray += adapterResolver.findAdapter<Any>(propertyType).write(value, propertyType, annotations)
         }
 
         return byteArray
@@ -74,7 +75,8 @@ class StructAdapter<T: Any>(
                 ?: throw NoReadableVariableFound(type, parameter.name)
 
             val value = property.get(obj) ?: throw NoValueReturned(type, property)
-            byteArray += adapterResolver.findAdapter<Any>(parameterType).write(value, parameterType)
+            byteArray += adapterResolver.findAdapter<Any>(parameterType)
+                .write(value, parameterType, parameter.annotations)
         }
 
         return byteArray

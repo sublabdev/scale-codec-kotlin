@@ -12,7 +12,7 @@ internal class GenericAdapterProvider<T>(
 ): ScaleCodecAdapter<T>() {
 
     @Throws(NoAdapterKnown::class)
-    override fun read(reader: ByteArrayReader, type: KType): T {
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>): T {
         for (provider in adapterProviders) {
             val adapter = provider.get<T>() ?: continue
 
@@ -32,7 +32,7 @@ internal class GenericAdapterProvider<T>(
         throw NoAdapterKnown(type = type)
     }
 
-    override fun write(obj: T, type: KType): ByteArray {
+    override fun write(obj: T, type: KType, annotations: List<Annotation>): ByteArray {
         for (provider in adapterProviders) {
             val adapter = provider.get<T>() ?: continue
             val byteArray = runCatching { adapter.write(obj, type) }.getOrNull()

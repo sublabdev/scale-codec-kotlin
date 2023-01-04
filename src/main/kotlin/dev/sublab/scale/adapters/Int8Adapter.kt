@@ -7,6 +7,6 @@ import dev.sublab.scale.ScaleCodecAdapter
 import kotlin.reflect.KType
 
 class Int8Adapter: ScaleCodecAdapter<Int8>() {
-    override fun read(reader: ByteArrayReader, type: KType) = reader.readByte()
-    override fun write(obj: Int8, type: KType) = obj.toByteArray()
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = reader.readByte()
+    override fun write(obj: Int8, type: KType, annotations: List<Annotation>) = obj.toByteArray()
 }

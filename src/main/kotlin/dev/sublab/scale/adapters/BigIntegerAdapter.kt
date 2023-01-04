@@ -47,7 +47,7 @@ fun ByteArray.clampedToBigInteger() = BigInteger(when {
     else -> BigInteger(this)
 }.toString())
 
-private fun BigInteger.toClampedByteArray(): ByteArray {
+fun BigInteger.toClampedByteArray(): ByteArray {
     val byteArray = when {
         this < BigInteger((1 shl UByte.SIZE_BITS).toString()) -> toByte().toUByte().toByteArray()
         this < BigInteger((1 shl UInt16.SIZE_BITS).toString()) -> toShort().toUShort().toByteArray()
@@ -63,7 +63,7 @@ private fun BigInteger.toClampedByteArray(): ByteArray {
 class BigIntegerAdapter(
     private val adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<BigInteger>() {
-    override fun read(reader: ByteArrayReader, type: KType): BigInteger {
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>): BigInteger {
         val byte = reader.readByte()
         val mode = byte and 0b11
         val value = byte or 0b11
@@ -79,7 +79,7 @@ class BigIntegerAdapter(
     }
 
     @Throws(NegativeBigIntegerNotSupported::class)
-    override fun write(obj: BigInteger, type: KType): ByteArray {
+    override fun write(obj: BigInteger, type: KType, annotations: List<Annotation>): ByteArray {
         if (obj.signum() < 0) {
             throw NegativeBigIntegerNotSupported()
         }

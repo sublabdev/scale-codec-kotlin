@@ -13,23 +13,23 @@ private fun <T> parseBoolean(reader: ByteArrayReader, map: Map<Int, T>) = reader
 
 @Suppress("unused")
 class BooleanAdapter: ScaleCodecAdapter<Boolean>() {
-    override fun read(reader: ByteArrayReader, type: KType) = parseBoolean(reader, mapOf(
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = parseBoolean(reader, mapOf(
         0 to false,
         1 to true
     ))!! // even it's safe here, don't like the force unwrap, rethink
 
-    override fun write(obj: Boolean, type: KType) = byteArrayOf(if (obj) 1 else 0)
+    override fun write(obj: Boolean, type: KType, annotations: List<Annotation>) = byteArrayOf(if (obj) 1 else 0)
 }
 
 @Suppress("unused")
 class NullableBooleanAdapter: ScaleCodecAdapter<Boolean?>() {
-    override fun read(reader: ByteArrayReader, type: KType) = parseBoolean(reader, mapOf(
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = parseBoolean(reader, mapOf(
         0 to null,
         1 to true,
         2 to false
     ))
 
-    override fun write(obj: Boolean?, type: KType) = byteArrayOf(
+    override fun write(obj: Boolean?, type: KType, annotations: List<Annotation>) = byteArrayOf(
         obj?.let {
             if (it) 1 else 2
         } ?: 0

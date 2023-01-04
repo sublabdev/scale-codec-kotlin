@@ -8,9 +8,9 @@ import dev.sublab.scale.ScaleCodecAdapter
 import kotlin.reflect.KType
 
 class UInt256Adapter: ScaleCodecAdapter<UInt256>() {
-    override fun read(reader: ByteArrayReader, type: KType) = reader
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = reader
         .read(UInt256.SIZE_BYTES)
         .toUInt256()
 
-    override fun write(obj: UInt256, type: KType) = obj.toByteArray()
+    override fun write(obj: UInt256, type: KType, annotations: List<Annotation>) = obj.toByteArray()
 }

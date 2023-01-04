@@ -13,7 +13,7 @@ class NullableAdapter<T>(
 ): ScaleCodecAdapter<T?>() {
 
     @Throws(InvalidTypeException::class, UnwrappingException::class)
-    override fun read(reader: ByteArrayReader, type: KType): T? = when (reader.readByte().toInt()) {
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>): T? = when (reader.readByte().toInt()) {
         0 -> null
         1 -> {
             if (!type.isMarkedNullable) throw InvalidTypeException(type)
@@ -24,7 +24,7 @@ class NullableAdapter<T>(
     }
 
     @Throws(InvalidTypeException::class)
-    override fun write(obj: T?, type: KType): ByteArray {
+    override fun write(obj: T?, type: KType, annotations: List<Annotation>): ByteArray {
         if (!type.isMarkedNullable) throw InvalidTypeException(type)
         val wrappedType = type.classifier?.createType() ?: throw InvalidTypeException(type)
 

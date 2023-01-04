@@ -6,7 +6,6 @@ import dev.sublab.scale.reflection.createGenericType
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createType
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 abstract class BaseTest<T> {
 

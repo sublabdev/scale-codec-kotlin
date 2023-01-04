@@ -11,6 +11,13 @@ class ByteArrayAdapter(
 ): ScaleCodecAdapter<ByteArray>() {
     private val adapter = ListAdapter<Byte>(adapterResolver)
 
-    override fun read(reader: ByteArrayReader, type: KType) = adapter.read(reader, listOfBytesType()).toByteArray()
-    override fun write(obj: ByteArray, type: KType) = adapter.write(obj.toList(), listOfBytesType())
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = adapter.read(
+        reader,
+        listOfBytesType()
+    ).toByteArray()
+    
+    override fun write(obj: ByteArray, type: KType, annotations: List<Annotation>) = adapter.write(
+        obj.toList(),
+        listOfBytesType()
+    )
 }

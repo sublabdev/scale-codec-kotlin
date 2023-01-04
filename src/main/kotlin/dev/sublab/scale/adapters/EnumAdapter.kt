@@ -19,7 +19,7 @@ class EnumAdapter<T: Any>(
 
     @Suppress("UNCHECKED_CAST")
     @Throws(InvalidEnumClassException::class, InvalidTypeException::class)
-    override fun read(reader: ByteArrayReader, type: KType): T {
+    override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>): T {
         val kClass = type.classifier as? KClass<*> ?: throw InvalidTypeException(type)
 
         val enumInstance = readEnumClass(reader, kClass)
@@ -52,7 +52,7 @@ class EnumAdapter<T: Any>(
         = adapterResolver.findAdapter(UByte::class).read(reader, UByte::class).toInt()
 
     @Throws(InvalidEnumClassException::class, InvalidTypeException::class)
-    override fun write(obj: T, type: KType): ByteArray {
+    override fun write(obj: T, type: KType, annotations: List<Annotation>): ByteArray {
         val kClass = type.classifier as? KClass<*> ?: throw InvalidTypeException(type)
 
         val writtenData = writeEnumClass(obj, kClass)

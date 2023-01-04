@@ -9,5 +9,5 @@ internal class TestBoolean: BaseTest<Boolean>() {
     override val adapter = BooleanAdapter()
     override val nullableAdapter = NullableBooleanAdapter()
 
-    override val testValues = listOf(true, false, true, false)
+    override val testValues = arrayListOf(true, false, true, false)
 }
