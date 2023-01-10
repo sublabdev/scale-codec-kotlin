@@ -6,6 +6,7 @@ import dev.sublab.scale.ScaleCodecAdapterProvider
 import dev.sublab.scale.adapters.*
 import dev.sublab.scale.annotations.EnumClass
 import dev.sublab.common.numerics.*
+import dev.sublab.scale.types.ScaleEncodedByteArray
 import java.math.BigInteger
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.findAnnotation
@@ -68,6 +69,7 @@ class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
 
     private fun provideByteArray() {
         setAdapter(ByteArrayAdapter(adapterProvider), ByteArray::class)
+        setAdapter(ScaleEncodedByteArrayAdapter(), ScaleEncodedByteArray::class)
     }
 
     private fun provideList() {
