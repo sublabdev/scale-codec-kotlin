@@ -11,6 +11,10 @@ import java.math.BigInteger
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.findAnnotation
 
+/**
+ * Default scale codec adapter provider which provides adapter for the main by default supported types. The adapters for
+ * those types are set during the provider's initialization, so no additional step is required for that.
+ */
 class DefaultScaleCodecAdapterProvider : ScaleCodecAdapterProvider() {
     init {
         // Primitives

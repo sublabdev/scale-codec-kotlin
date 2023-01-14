@@ -6,6 +6,9 @@ import dev.sublab.scale.ScaleCodecAdapterProvider
 import dev.sublab.scale.reflection.listOfBytesType
 import kotlin.reflect.KType
 
+/**
+ * An adapter to handle read and write operations for ByteArray
+ */
 class ByteArrayAdapter(
     adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<ByteArray>() {

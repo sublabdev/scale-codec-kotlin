@@ -8,6 +8,9 @@ import dev.sublab.scale.reflection.nullableCreateType
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
+/**
+ * Adapter provider that provides adapters based on the specified types
+ */
 abstract class ScaleCodecAdapterProvider {
     private var nullableAdapter: AdapterProvider? = null
     private var nullableAdapters: MutableMap<TypeHolder, AdapterProvider> = mutableMapOf()
@@ -90,6 +93,9 @@ abstract class ScaleCodecAdapterProvider {
         matchClassesCache[type] = it
     }
 
+    /**
+     * Provides an adapter for a specified type
+     */
     @Throws(NoAdapterKnown::class)
     fun <T> findAdapter(type: KType)
             = findAdapterProvider(type)?.get<T>() ?: tryGenericProviders(type)
@@ -100,6 +106,11 @@ abstract class ScaleCodecAdapterProvider {
 
     // Set
 
+    /**
+     * Caches an adapter for a specified type
+     * @param adapter an adapter to cache
+     * @param type A type for which it needs to be cached
+     */
     fun <T> setAdapter(adapter: ScaleCodecAdapter<T>, type: KType) {
         adapters[TypeHolder(type = type)] = AdapterProvider(instance = adapter)
     }
@@ -108,6 +119,11 @@ abstract class ScaleCodecAdapterProvider {
         adapters[TypeHolder(clazz = type)] = AdapterProvider(instance = adapter)
     }
 
+    /**
+     * Caches an adapter using a factory for a specified type
+     * @param factory a factory from which an adapter is created later
+     * @param type a type for which it needs to be cached
+     */
     fun <T> setAdapter(factory: ScaleCodecAdapterFactory, type: KType) {
         adapters[TypeHolder(type = type)] = AdapterProvider(factory = factory)
     }
@@ -116,26 +132,41 @@ abstract class ScaleCodecAdapterProvider {
         adapters[TypeHolder(clazz = type)] = AdapterProvider(factory = factory)
     }
 
+    /**
+     * Sets a nullable adapter using a factory
+     */
     fun setNullableAdapter(factory: ScaleCodecAdapterFactory) {
         nullableAdapter = AdapterProvider(factory = factory)
     }
 
+    /**
+     * Sets a nullable adapter for a generic type T
+     */
     fun <T> setNullableAdapter(adapter: ScaleCodecAdapter<T>, type: KType) {
         nullableAdapters[TypeHolder(type = type)] = AdapterProvider(instance = adapter)
     }
 
+    /**
+     * Adds a conditional adapter for a generic type T and for a specific condition
+     */
     fun <T> addConditionalAdapter(adapter: ScaleCodecAdapter<T>, condition: (KType) -> Boolean) {
         conditionalAdapters.add {
             if (condition(it)) AdapterProvider(instance = adapter) else null
         }
     }
 
+    /**
+     * Adds a conditional adapter using a factory and for a specific condition
+     */
     fun addConditionalAdapter(factory: ScaleCodecAdapterFactory, condition: (KType) -> Boolean) {
         conditionalAdapters.add {
             if (condition(it)) AdapterProvider(factory = factory) else null
         }
     }
 
+    /**
+     * Adds a generic adapter using a factory
+     */
     fun addGenericAdapter(factory: ScaleCodecAdapterFactory) {
         genericAdapters.add(AdapterProvider(factory = factory))
     }

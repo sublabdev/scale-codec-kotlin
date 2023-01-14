@@ -6,6 +6,9 @@ import dev.sublab.scale.reflection.*
 import java.math.BigInteger
 import kotlin.reflect.KType
 
+/**
+ * An adapter for List
+ */
 @Suppress("unused")
 class ListAdapter<T>(
     private val adapterResolver: ScaleCodecAdapterProvider

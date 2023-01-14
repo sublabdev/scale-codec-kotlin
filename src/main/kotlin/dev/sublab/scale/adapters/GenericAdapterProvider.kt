@@ -6,6 +6,9 @@ import dev.sublab.scale.ScaleCodecAdapter
 import dev.sublab.scale.default.AdapterProvider
 import kotlin.reflect.KType
 
+/**
+ * A generic adapter provider
+ */
 internal class GenericAdapterProvider<T>(
     val adapterProviders: List<AdapterProvider>,
     val onMatch: (AdapterProvider) -> Unit

@@ -7,6 +7,9 @@ import kotlin.reflect.full.createType
 
 class InvalidNullableByteArrayException: Throwable()
 
+/**
+ * An adapter a generic nullable type
+ */
 @Suppress("unused")
 class NullableAdapter<T>(
     private val adapterResolver: ScaleCodecAdapterProvider

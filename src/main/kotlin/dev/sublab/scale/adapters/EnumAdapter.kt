@@ -13,6 +13,9 @@ class InvalidTypeException(type: KType): Throwable()
 @Suppress("unused")
 class InvalidEnumClassException(kClass: KClass<*>? = null, type: KType? = null, obj: Any): Throwable()
 
+/**
+ * An adapter for Enum
+ */
 class EnumAdapter<T: Any>(
     private val adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<T>() {

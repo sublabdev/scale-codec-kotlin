@@ -11,6 +11,9 @@ private fun <T> parseBoolean(reader: ByteArrayReader, map: Map<Int, T>) = reader
     else throw InvalidBooleanByteException(it)
 }
 
+/**
+ * An adapter for Boolean type
+ */
 @Suppress("unused")
 class BooleanAdapter: ScaleCodecAdapter<Boolean>() {
     override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = parseBoolean(reader, mapOf(
@@ -21,6 +24,9 @@ class BooleanAdapter: ScaleCodecAdapter<Boolean>() {
     override fun write(obj: Boolean, type: KType, annotations: List<Annotation>) = byteArrayOf(if (obj) 1 else 0)
 }
 
+/**
+ * An adapter for NullableBoolean type
+ */
 @Suppress("unused")
 class NullableBooleanAdapter: ScaleCodecAdapter<Boolean?>() {
     override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = parseBoolean(reader, mapOf(

@@ -11,6 +11,9 @@ class NoNullableAdapterException: Throwable()
 open class ScaleCodecReadException(reason: String?): Throwable(reason)
 open class ScaleCodecWriteException(reason: String?): Throwable(reason)
 
+/**
+ * Provides a default interface for adapters
+ */
 abstract class ScaleCodecAdapter<T> {
     @Throws(ScaleCodecReadException::class)
     fun read(byteArray: ByteArray, type: KType, annotations: List<Annotation> = listOf()): T = read(
@@ -20,9 +23,17 @@ abstract class ScaleCodecAdapter<T> {
 
     // Implement in adapters
 
+    /**
+     * Reads (decodes) data to specified type
+     * @return Decoded value of the provided type
+     */
     @Throws(ScaleCodecReadException::class)
     abstract fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation> = listOf()): T
 
+    /**
+     * Writes (encodes) the object
+     * @return The encoded ByteArray
+     */
     @Throws(ScaleCodecWriteException::class)
     abstract fun write(obj: T, type: KType, annotations: List<Annotation> = listOf()): ByteArray
 

@@ -47,6 +47,9 @@ fun ByteArray.clampedToBigInteger() = BigInteger(when {
     else -> BigInteger(this)
 }.toString())
 
+/**
+ * Adapter for BigInteger
+ */
 fun BigInteger.toClampedByteArray(): ByteArray {
     val byteArray = when {
         this < BigInteger((1 shl UByte.SIZE_BITS).toString()) -> toByte().toUByte().toByteArray()

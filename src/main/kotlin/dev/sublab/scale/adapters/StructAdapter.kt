@@ -7,6 +7,9 @@ import kotlin.reflect.full.*
 class NoValueReturned(type: KClass<*>, property: KProperty<*>): Throwable()
 class NoReadableVariableFound(type: KClass<*>, propertyName: String?): Throwable()
 
+/**
+ * An adapter for Struct
+ */
 class StructAdapter<T: Any>(
     private val adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<T>() {

@@ -7,6 +7,9 @@ import dev.sublab.scale.ByteArrayReader
 import dev.sublab.scale.ScaleCodecAdapter
 import kotlin.reflect.KType
 
+/**
+ * An adapter for Int256
+ */
 class Int256Adapter: ScaleCodecAdapter<Int256>() {
     override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = reader
         .read(Int256.SIZE_BYTES)
