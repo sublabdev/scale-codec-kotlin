@@ -18,4 +18,8 @@
 
 package dev.sublab.scale.annotations
 
+/**
+ * A fixed array of a specific size
+ * @property size the size of a fixed array
+ */
 annotation class FixedArray(val size: Int)

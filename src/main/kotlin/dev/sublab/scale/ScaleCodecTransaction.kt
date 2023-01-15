@@ -30,6 +30,7 @@ class ScaleCodecTransaction<Data: Any>(private val codec: ScaleCodec<Data>) {
 
     /**
      * Appends additional generic objects to existing encoded data
+     * @param obj a generic obj to be appended
      * @return Returns `self` with updated encoded data
      */
     @Throws
@@ -37,6 +38,11 @@ class ScaleCodecTransaction<Data: Any>(private val codec: ScaleCodec<Data>) {
         byteArray += codec.fromData(codec.toScale(obj, type))
     }
 
+    /**
+     * Appends additional generic objects to existing encoded data
+     * @param obj a generic obj to be appended
+     * @return Returns `self` with updated encoded data
+     */
     @Throws
     fun <T: Any> append(obj: T, type: KClass<T>) = apply {
         byteArray += codec.fromData(codec.toScale(obj, type))

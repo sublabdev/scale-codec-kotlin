@@ -23,6 +23,8 @@ import dev.sublab.scale.ScaleCodecAdapterFactory
 
 /**
  * Handles providing or creating of a `ScaleCodecAdapter` object
+ * @property instance an instance of an adapter
+ * @property factory a scale codec adapter factory
  */
 internal data class AdapterProvider(
     val instance: ScaleCodecAdapter<*>? = null,

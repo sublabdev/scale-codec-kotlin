@@ -26,7 +26,7 @@ import dev.sublab.scale.ScaleCodecAdapter
 import kotlin.reflect.KType
 
 /**
- * An adapter for Int512
+ * An adapter for [Int512]
  */
 class Int512Adapter: ScaleCodecAdapter<Int512>() {
     override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = reader

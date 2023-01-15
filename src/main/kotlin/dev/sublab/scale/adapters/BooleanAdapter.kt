@@ -30,7 +30,7 @@ private fun <T> parseBoolean(reader: ByteArrayReader, map: Map<Int, T>) = reader
 }
 
 /**
- * An adapter for Boolean type
+ * An adapter for [Boolean] type
  */
 @Suppress("unused")
 class BooleanAdapter: ScaleCodecAdapter<Boolean>() {
@@ -43,7 +43,7 @@ class BooleanAdapter: ScaleCodecAdapter<Boolean>() {
 }
 
 /**
- * An adapter for NullableBoolean type
+ * An adapter for [NullableBoolean] type
  */
 @Suppress("unused")
 class NullableBooleanAdapter: ScaleCodecAdapter<Boolean?>() {

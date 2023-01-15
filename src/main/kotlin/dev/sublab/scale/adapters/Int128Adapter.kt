@@ -26,7 +26,7 @@ import dev.sublab.scale.ScaleCodecAdapter
 import kotlin.reflect.KType
 
 /**
- * An adapter for Int128
+ * An adapter for [Int128]
  */
 class Int128Adapter: ScaleCodecAdapter<Int128>() {
     override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>) = reader

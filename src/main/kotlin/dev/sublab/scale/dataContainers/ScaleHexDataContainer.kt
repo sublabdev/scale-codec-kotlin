@@ -21,6 +21,9 @@ package dev.sublab.scale.dataContainers
 import dev.sublab.hex.hex
 import dev.sublab.scale.ScaleDataContainer
 
+/**
+ * Data container for [hex]
+ */
 class ScaleHexDataContainer: ScaleDataContainer<String> {
     override val type get() = String::class
 

@@ -19,7 +19,8 @@
 package dev.sublab.scale.types
 
 /**
- * A scake encoded byte array wrapper
+ * A scale encoded [ByteArray] wrapper
+ * @property value a [ByteArray] that should be wrapped
  */
 data class ScaleEncodedByteArray(val value: ByteArray) {
     override fun equals(other: Any?): Boolean {
@@ -39,7 +40,7 @@ data class ScaleEncodedByteArray(val value: ByteArray) {
 }
 
 /**
- * ByteArray to scale-encoded converter
+ * [ByteArray] to scale-encoded converter
  */
 @Suppress("unused")
 fun ByteArray.asScaleEncoded() = ScaleEncodedByteArray(this)

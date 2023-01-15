@@ -22,12 +22,23 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 
+/**
+ * Scale coded that handles converting objects to [ByteArray] and back
+ * @property settings settings for a scale codec
+ */
 @Suppress("unused")
 class ScaleCodec<Data: Any>(
     var settings: ScaleCodecSettings<Data>
 ) {
     companion object {
+        /**
+         * A default scale codec with default settings
+         */
         fun default() = ScaleCodec(settings = ScaleCodecSettings.default())
+
+        /**
+         * A scale codec with default hex settings
+         */
         fun hex() = ScaleCodec(settings = ScaleCodecSettings.hex())
     }
 
@@ -36,6 +47,9 @@ class ScaleCodec<Data: Any>(
 
     /**
      * This method deserializes object of given Kotlin type
+     * @param data data to be deserialized
+     * @param type a type to deserialize to
+     * @return A deserialized object
      */
     @Throws
     fun <T> fromScale(data: Data, type: KType)
@@ -43,6 +57,9 @@ class ScaleCodec<Data: Any>(
 
     /**
      * This method deserializes object of given Kotlin class
+     * @param data data to be deserialized
+     * @param type a type to deserialize to
+     * @return A deserialized object
      */
     @Throws
     fun <T: Any> fromScale(data: Data, type: KClass<T>)
@@ -50,6 +67,9 @@ class ScaleCodec<Data: Any>(
 
     /**
      * This method serializes object of given nonnull Kotlin type
+     * @param obj a generic object to be deserialized
+     * @param type a type to deserialize to
+     * @return A deserialized object
      */
     @Throws
     fun <T> toScale(obj: T, type: KType) = toData(
@@ -58,6 +78,8 @@ class ScaleCodec<Data: Any>(
 
     /**
      * This method serializes object of given nonnull Kotlin class
+     * @param obj a generic object to be serialized
+     * @return A serialized object
      */
     @Throws
     fun <T: Any> toScale(obj: T, type: KClass<T>)

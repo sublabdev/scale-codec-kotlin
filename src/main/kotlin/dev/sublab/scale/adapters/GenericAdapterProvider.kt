@@ -26,6 +26,8 @@ import kotlin.reflect.KType
 
 /**
  * A generic adapter provider
+ * @property adapterProviders a list of adapter providers
+ * @property onMatch a block called when an adapter provider is found
  */
 internal class GenericAdapterProvider<T>(
     val adapterProviders: List<AdapterProvider>,

@@ -27,6 +27,7 @@ class InvalidNullableByteArrayException: Throwable()
 
 /**
  * An adapter a generic nullable type
+ * @property adapterResolver a scale codec adapter provider
  */
 @Suppress("unused")
 class NullableAdapter<T>(

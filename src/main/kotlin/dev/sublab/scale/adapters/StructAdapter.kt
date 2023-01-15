@@ -26,7 +26,8 @@ class NoValueReturned(type: KClass<*>, property: KProperty<*>): Throwable()
 class NoReadableVariableFound(type: KClass<*>, propertyName: String?): Throwable()
 
 /**
- * An adapter for Struct
+ * An adapter for [Struct]
+ * @property adapterResolver a scale codec adapter provider
  */
 class StructAdapter<T: Any>(
     private val adapterResolver: ScaleCodecAdapterProvider

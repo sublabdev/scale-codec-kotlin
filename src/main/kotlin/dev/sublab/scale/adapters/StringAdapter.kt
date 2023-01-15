@@ -23,7 +23,7 @@ import dev.sublab.scale.reflection.listOfBytesType
 import kotlin.reflect.KType
 
 /**
- * An adapter for String
+ * An adapter for [String]
  */
 @Suppress("unused")
 class StringAdapter(

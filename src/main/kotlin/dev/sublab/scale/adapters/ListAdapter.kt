@@ -25,7 +25,8 @@ import java.math.BigInteger
 import kotlin.reflect.KType
 
 /**
- * An adapter for List
+ * An adapter for [List]
+ * @property adapterResolver a scale codec adapter provider
  */
 @Suppress("unused")
 class ListAdapter<T>(

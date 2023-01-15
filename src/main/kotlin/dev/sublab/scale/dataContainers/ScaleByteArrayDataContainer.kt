@@ -20,6 +20,9 @@ package dev.sublab.scale.dataContainers
 
 import dev.sublab.scale.ScaleDataContainer
 
+/**
+ * Data container for [ByteArray]
+ */
 class ScaleByteArrayDataContainer: ScaleDataContainer<ByteArray> {
     override val type get() = ByteArray::class
 

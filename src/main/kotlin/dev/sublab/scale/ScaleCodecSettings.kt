@@ -24,6 +24,8 @@ import dev.sublab.scale.default.DefaultScaleCodecAdapterProvider
 
 /**
  * Scale codec's settings. Contains a data container and an adapter provider
+ * @param dataContainer scale data container
+ * @param adapterProvider scale codec adapter provider
  */
 data class ScaleCodecSettings<Data: Any>(
     val dataContainer: ScaleDataContainer<Data>,

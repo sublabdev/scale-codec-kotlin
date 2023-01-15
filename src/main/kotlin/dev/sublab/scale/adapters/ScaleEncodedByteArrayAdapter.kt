@@ -24,7 +24,7 @@ import dev.sublab.scale.types.ScaleEncodedByteArray
 import kotlin.reflect.KType
 
 /**
- * An adapter for scale encoded ByteArray
+ * An adapter for scale encoded [ByteArray]
  */
 class ScaleEncodedByteArrayAdapter: ScaleCodecAdapter<ScaleEncodedByteArray>() {
     override fun read(reader: ByteArrayReader, type: KType, annotations: List<Annotation>): ScaleEncodedByteArray {

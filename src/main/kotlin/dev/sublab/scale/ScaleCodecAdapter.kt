@@ -33,6 +33,13 @@ open class ScaleCodecWriteException(reason: String?): Throwable(reason)
  * Provides a default interface for adapters
  */
 abstract class ScaleCodecAdapter<T> {
+    /**
+     * Reads (decodes) data to specified type from a [ByteArray]
+     * @param byteArray [ByteArray] to decode to a type
+     * @param type expected type
+     * @param annotations a list of annotations. The default value is an empty list
+     * @return Decoded value of the provided type
+     */
     @Throws(ScaleCodecReadException::class)
     fun read(byteArray: ByteArray, type: KType, annotations: List<Annotation> = listOf()): T = read(
         ByteArrayReader(byteArray),
@@ -43,6 +50,9 @@ abstract class ScaleCodecAdapter<T> {
 
     /**
      * Reads (decodes) data to specified type
+     * @param reader a [ByteArray] reader that
+     * @param type expected type
+     * @param annotations a list of annotations. The default value is an empty list
      * @return Decoded value of the provided type
      */
     @Throws(ScaleCodecReadException::class)
@@ -50,6 +60,9 @@ abstract class ScaleCodecAdapter<T> {
 
     /**
      * Writes (encodes) the object
+     * @param obj a generiic object to needs to be written
+     * @param type a required [KType]
+     * @param annotations a list of annotations. The default value is an empty list
      * @return The encoded ByteArray
      */
     @Throws(ScaleCodecWriteException::class)

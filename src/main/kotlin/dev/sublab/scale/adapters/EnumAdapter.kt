@@ -32,7 +32,8 @@ class InvalidTypeException(type: KType): Throwable()
 class InvalidEnumClassException(kClass: KClass<*>? = null, type: KType? = null, obj: Any): Throwable()
 
 /**
- * An adapter for Enum
+ * An adapter for [Enum]
+ * @property adapterResolver a scale codec adapter provider
  */
 class EnumAdapter<T: Any>(
     private val adapterResolver: ScaleCodecAdapterProvider

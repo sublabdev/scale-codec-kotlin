@@ -33,9 +33,9 @@ class ByteArrayReader(
     private var lastReadSize = 0
 
     /**
-     * Reads a ByteArray of a specified size
-     * @param size The size of ByteArray to be read
-     * @return A new ByteArray as result of reading the initial one
+     * Reads a [ByteArray] of a specified size
+     * @param size The size of [ByteArray] to be read
+     * @return A new [ByteArray] as result of reading the initial one
      */
     @Throws(IndexOutOfBoundsException::class)
     fun read(size: Int): ByteArray {

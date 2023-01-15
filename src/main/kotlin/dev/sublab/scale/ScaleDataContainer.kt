@@ -21,18 +21,20 @@ package dev.sublab.scale
 import kotlin.reflect.KClass
 
 /**
- * An interface for converting a generic Data to ByteArray and vica versa
+ * An interface for converting a generic Data to [ByteArray] and back
  */
 interface ScaleDataContainer<Data: Any> {
     val type: KClass<Data>
 
     /**
-     * Converts ByteArray to a generic Data
+     * Converts [ByteArray] to a generic [Data]
+     * @param byteArray a [ByteArray] to be converted to [Data]
      */
     fun fromByteArray(byteArray: ByteArray): Data
 
     /**
-     * Converts a generic Data to ByteArray
+     * Converts a generic [Data] to [ByteArray]
+     * @param data [Data] to be converted to [ByteArray]
      */
     fun toByteArray(data: Data): ByteArray
 }

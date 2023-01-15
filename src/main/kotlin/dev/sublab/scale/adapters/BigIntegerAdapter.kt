@@ -57,6 +57,10 @@ private fun ByteArray.fillingWithZeroesUntilWidth(width: Int): ByteArray {
     }
 }
 
+/**
+ * Converts clamped [ByteArray] to [BigInteger]
+ * @return Returns [BigInteger] from a clamped [ByteArray]
+ */
 fun ByteArray.clampedToBigInteger() = BigInteger(when {
     size <= UByte.SIZE_BYTES -> first().toUByte()
     size <= UInt16.SIZE_BYTES -> fillingWithZeroesUntilWidth(UInt16.SIZE_BYTES).toUInt16()
@@ -66,7 +70,8 @@ fun ByteArray.clampedToBigInteger() = BigInteger(when {
 }.toString())
 
 /**
- * Adapter for BigInteger
+ * Converts [BigInteger] to clamped [ByteArray]
+ * @return A clamped [ByteArray] from [BigInteger]
  */
 fun BigInteger.toClampedByteArray(): ByteArray {
     val byteArray = when {
@@ -81,6 +86,10 @@ fun BigInteger.toClampedByteArray(): ByteArray {
     return byteArray.copyOfRange(0, zeroOffset)
 }
 
+/**
+ * An adapter for [BigInteger]
+ * @property adapterResolver a scale codec adapter provider
+ */
 class BigIntegerAdapter(
     private val adapterResolver: ScaleCodecAdapterProvider
 ): ScaleCodecAdapter<BigInteger>() {
