@@ -7,12 +7,12 @@
 
 </div>
 
-[![Maven Central](https://img.shields.io/maven-central/v/dev.sublab/common-kotlin)](https://mvnrepository.com/artifact/dev.sublab/common-kotlin)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.sublab/scale-codec-kotlin)](https://mvnrepository.com/artifact/dev.sublab/scale-codec-kotlin)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Telegram channel](https://img.shields.io/badge/chat-telegram-green.svg?logo=telegram)](https://t.me/sublabsupport)
 [![GitHub License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
-# Sublab's Common Kotlin library
+# Sublab's Scale Codec Kotlin library
 
 This is a Kotlin repository which implements [Parity's SCALE codec](https://docs.substrate.io/reference/scale-codec/) in a designated way. 
 
