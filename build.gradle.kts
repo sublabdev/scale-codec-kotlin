@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.21"
+    kotlin("jvm")
     `maven-publish`
+    id("org.jetbrains.dokka")
 }
 
 group = "dev.sublab"
@@ -13,16 +14,26 @@ repositories {
     mavenCentral()
 }
 
+val kotlinVersion: String by project
+val dokkaVersion: String by project
+val commonVersion: String by project
+val hashingVersion: String by project
+
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("dev.sublab:common-kotlin:1.0.0")
-    implementation("dev.sublab:hashing-kotlin:1.0.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
-    implementation("org.jetbrains.kotlin:kotlin-test:1.7.21")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$dokkaVersion")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
+    implementation("dev.sublab:common-kotlin:$commonVersion")
+    implementation("dev.sublab:hashing-kotlin:$hashingVersion")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(projectDir.resolve("reference"))
 }
 
 tasks.withType<KotlinCompile> {
