@@ -60,7 +60,7 @@ implementation 'dev.sublab:scale-codec-kotlin:1.0.0'
 
 ## Documentation
 
-- Our GitBook: [https://docs.sublab.dev/kotlin-libraries/scale-codec-kotlin/](https://docs.sublab.dev/kotlin-libraries/scale-codec-kotlin/)
+- Our GitBook: [https://docs.sublab.dev/kotlin-libraries/scale-codec-library/](https://docs.sublab.dev/kotlin-libraries/scale-codec-library/)
 - API reference: [https://api-reference.sublab.dev/scale-codec-kotlin/](https://api-reference.sublab.dev/scale-codec-kotlin/)
 
 ## Contributing
